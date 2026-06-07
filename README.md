@@ -22,6 +22,7 @@ Currently supported calculations include:
 - Geometric height to geopotential height
 - Geometric height to geopotential
 - Geometric height to atmospheric pressure
+- Dew point from vapor pressure
 
 ## Installation
 
