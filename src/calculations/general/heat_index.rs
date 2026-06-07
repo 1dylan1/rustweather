@@ -99,7 +99,7 @@ where
         heat_index += adjustment;
     }
 
-    Ok(heat_index)
+    return Ok(heat_index);
 }
 
 #[cfg(test)]

@@ -6,7 +6,7 @@ pub enum WindSpeedError {
 }
 
 /// Computes the wind speed from u and v components.
-/// Wind speed is the rate air moves horizontally.
+/// wind speed is the rate air moves horizontally.
 ///
 /// # Type Parameters
 ///

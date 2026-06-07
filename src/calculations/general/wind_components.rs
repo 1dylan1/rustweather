@@ -5,10 +5,30 @@ pub enum WindComponentError {
     InvalidSpeed,
     InvalidDirection,
 }
-
-pub fn wind_components<T>(speed: T, wind_direction: T) -> Result<(f64, f64), WindComponentError>
+/// Computes the U and V wind components.
+/// u and v are horizontal components of wind speed, U is the east-west, where positive values
+/// mean that wind is blowing from west to east, and negative from east to west. V is the
+/// north-south, positive values mean wind is blowing from south to north, and negative is north to
+/// south.
+///
+/// # Type Parameters
+///
+/// `T` and 'U' can be any numeric type that implements [`ToPrimitive`] and can be
+/// converted to `f64`.
+///
+/// # Arguments
+///
+/// * `speed` wind speed in the input speed unit, such as m/s, mph, knots.
+/// * `wind_direction` - degrees, where 0 is north, 90 east, 180 south, 270 west.
+///
+/// # Returns
+///
+/// * `u` - wind component in the same speed unit as `speed`. Positive values are eastward flowing.
+/// * `v` - wind component in the same speed unit as `speed`. Positive vaules are northward flowing.
+pub fn wind_components<T, U>(speed: T, wind_direction: U) -> Result<(f64, f64), WindComponentError>
 where
     T: ToPrimitive,
+    U: ToPrimitive,
 {
     let speed = speed.to_f64().ok_or(WindComponentError::InvalidSpeed)?;
     let wind_direction = wind_direction

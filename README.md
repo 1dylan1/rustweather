@@ -12,6 +12,9 @@ Currently supported calculations include:
 - Meteorological wind direction from `u` and `v` wind components
 - `u` and `v` wind components from wind speed and direction
 - Wind chill temperature index
+- Pressure to height
+- Apparent temperature
+- Heat index
 
 ## Installation
 
@@ -67,6 +70,9 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `wind_direction(u, v)` | meters per second | degrees |
 | `wind_components(speed, direction)` | any speed unit, degrees | same speed unit |
 | `wind_chill(temp_f, speed_mph)` | degrees Fahrenheit, miles per hour | degrees Fahrenheit |
+| `apparent_temperature(temp_f, rh, wind_speed_mph)` | degrees Fahrenheit, percentage, miles per hours | degrees Fahrenheit |
+| `heat_index(temp_f, rh)` | degrees Fahrenheit, percentage | degrees Fahrenheit | 
+| `pressure_to_height(pressure)` | hectopascals (millibars) | feet |
 
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 

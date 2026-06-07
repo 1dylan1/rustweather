@@ -21,10 +21,10 @@ pub enum WindDirectionError {
 ///
 /// # Returns
 /// * `wind_direction` 0-360 degree direction of the wind
-
-pub fn wind_direction<T>(u: T, v: T) -> Result<f64, WindDirectionError>
+pub fn wind_direction<T, U>(u: T, v: U) -> Result<f64, WindDirectionError>
 where
     T: ToPrimitive,
+    U: ToPrimitive,
 {
     let u = u.to_f64().ok_or(WindDirectionError::InvalidComponent)?;
     let v = v.to_f64().ok_or(WindDirectionError::InvalidComponent)?;
