@@ -4,6 +4,10 @@ A lightweight Rust library for meteorological parameter calculations.
 
 `rustweather` provides reusable calculation utilities for common atmospheric and weather-related parameters. It is designed to be small, dependency-light, and suitable for use in weather applications, data processing pipelines, command-line tools, and scientific software.
 
+> [!IMPORTANT]
+> The long-term goal of this crate is to provide a Rust-native suite of meteorological calculation utilities comparable in scope to MetPy’s calculation tools in the Python ecosystem.
+> It is not intended to be a drop-in replacement for MetPy, as MetPy covers other features beyond just weather calculations.
+
 ## Features
 
 Currently supported calculations include:
@@ -79,6 +83,7 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `geometric_to_geopotential_height(height_m)` | meters | geopotential meters |
 | `height_to_geopotential(height_m)` | meters | square meters per second squared, `m^2/s^2` |
 | `height_to_pressure(height_m)` | meters | hectopascals (millibars) |
+| `dew_point_from_vapor_pressure(vapor_pressure)` | hectopascals (millibars) | degrees celsius |
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 
 ## Error Handling
