@@ -60,8 +60,8 @@ where
 
     let exponent = (gravity * molar_mass_air) / (gas_constant * lapse_rate_k_per_m);
 
-    Ok(sea_level_pressure_hpa
-        * (1.0 - (lapse_rate_k_per_m * height_m) / sea_level_temperature_k).powf(exponent))
+    return Ok(sea_level_pressure_hpa
+        * (1.0 - (lapse_rate_k_per_m * height_m) / sea_level_temperature_k).powf(exponent));
 }
 
 #[cfg(test)]

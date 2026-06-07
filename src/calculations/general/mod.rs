@@ -1,6 +1,6 @@
 pub mod apparent_temperature;
 pub mod geometric_to_geopotential_height;
-pub mod geopotential_to_height;
+pub mod geopotential_to_geometric_height;
 pub mod heat_index;
 pub mod height_to_geopotential;
 pub mod height_to_pressure;

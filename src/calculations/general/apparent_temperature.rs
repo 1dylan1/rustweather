@@ -113,7 +113,7 @@ where
             .map_err(ApparentTemperatureError::HeatIndexError);
     }
 
-    Ok(temperature_f)
+    return Ok(temperature_f);
 }
 
 #[cfg(test)]

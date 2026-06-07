@@ -62,8 +62,8 @@ where
 
     let wind_speed_power = wind_speed_mph.powf(0.16);
 
-    Ok(35.74 + 0.6215 * temperature_f - 35.75 * wind_speed_power
-        + 0.4275 * temperature_f * wind_speed_power)
+    return Ok(35.74 + 0.6215 * temperature_f - 35.75 * wind_speed_power
+        + 0.4275 * temperature_f * wind_speed_power);
 }
 
 #[cfg(test)]

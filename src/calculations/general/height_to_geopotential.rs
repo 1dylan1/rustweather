@@ -43,7 +43,7 @@ where
     let earth_radius_m = 6_356_766.0;
     let standard_gravity = 9.806_65;
 
-    Ok((standard_gravity * earth_radius_m * height_m) / (earth_radius_m + height_m))
+    return Ok((standard_gravity * earth_radius_m * height_m) / (earth_radius_m + height_m));
 }
 
 #[cfg(test)]
