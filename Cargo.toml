@@ -2,6 +2,8 @@
 name = "rustweather"
 version = "0.1.0"
 edition = "2024"
+description = "A Rust crate for weather, meteorology, and atmospheric parameter calculations."
+keywords = ["weather", "meteorology", "science", "forecast", "metpy", "MetPy", "atmosphere"]
 license = "MIT"
 
 [dependencies]
