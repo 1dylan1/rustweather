@@ -8,6 +8,9 @@ A lightweight Rust library for meteorological parameter calculations.
 > The long-term goal of this crate is to provide a Rust-native suite of meteorological calculation utilities comparable in scope to MetPy’s calculation tools in the Python ecosystem.
 > It is not intended to be a drop-in replacement for MetPy, as MetPy covers other features beyond just weather calculations.
 
+> [!TIP]
+> Auto generated docs for the most recent main commit are available at https://1dylan1.github.io/rustweather/rustweather/index.html
+
 ## Features
 
 Currently supported calculations include:
