@@ -5,6 +5,7 @@ edition = "2024"
 description = "A Rust crate for weather, meteorology, and atmospheric parameter calculations."
 keywords = ["weather", "meteorology", "science", "metpy",  "atmosphere"]
 license = "MIT"
+repository = "https://github.com/1dylan1/rustweather"
 
 [dependencies]
 num-traits = "0.2.19"
