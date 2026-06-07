@@ -15,6 +15,9 @@ Currently supported calculations include:
 - Pressure to height
 - Apparent temperature
 - Heat index
+- Geometric height to geopotential height
+- Geometric height to geopotential
+- Geometric height to atmospheric pressure
 
 ## Installation
 
@@ -73,7 +76,9 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `apparent_temperature(temp_f, rh, wind_speed_mph)` | degrees Fahrenheit, percentage, miles per hours | degrees Fahrenheit |
 | `heat_index(temp_f, rh)` | degrees Fahrenheit, percentage | degrees Fahrenheit | 
 | `pressure_to_height(pressure)` | hectopascals (millibars) | feet |
-
+| `geometric_to_geopotential_height(height_m)` | meters | geopotential meters |
+| `height_to_geopotential(height_m)` | meters | square meters per second squared, `m^2/s^2` |
+| `height_to_pressure(height_m)` | meters | hectopascals (millibars) |
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 
 ## Error Handling
