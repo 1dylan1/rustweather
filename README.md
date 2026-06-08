@@ -50,28 +50,15 @@ rustweather = { path = "../rustweather" }
 ## Usage
 
 ```rust
-use rustweather::calculations::general::{
-    wind_speed,
-    wind_direction,
-    wind_components,
-    wind_chill,
-};
+use rustweather::calculations::general::wind_speed;
+use rustweather::calculations::helpers::celsius_to_fahrenheit;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let speed = wind_speed(3.0, 4.0)?;
+fn main() {
+    let speed = wind_speed(3.0, 4.0).unwrap();
     println!("Wind speed: {speed} m/s");
 
-    let direction = wind_direction(4.0, 0.0)?;
-    println!("Wind direction: {direction}°");
-
-    let (u, v) = wind_components(10.0, 270.0)?;
-    println!("u component: {u}");
-    println!("v component: {v}");
-
-    let chill = wind_chill(5.0, 30.0)?;
-    println!("Wind chill: {chill}°F");
-
-    Ok(())
+    let temp_f = celsius_to_fahrenheit(0.0).unwrap();
+    println!("0C = {temp_f}F");
 }
 ```
 

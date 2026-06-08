@@ -1,11 +1,25 @@
-pub mod apparent_temperature;
-pub mod geometric_to_geopotential_height;
-pub mod geopotential_to_geometric_height;
-pub mod heat_index;
-pub mod height_to_geopotential;
-pub mod height_to_pressure;
-pub mod pressure_to_height;
-pub mod wind_chill;
-pub mod wind_components;
-pub mod wind_direction;
-pub mod wind_speed;
+mod apparent_temperature;
+mod geometric_to_geopotential_height;
+mod geopotential_to_geometric_height;
+mod heat_index;
+mod height_to_geopotential;
+mod height_to_pressure;
+mod pressure_to_height;
+mod wind_chill;
+mod wind_components;
+mod wind_direction;
+mod wind_speed;
+
+pub use apparent_temperature::{ApparentTemperatureError, apparent_temperature};
+pub use geometric_to_geopotential_height::{
+    GeopotentialHeightError, geometric_to_geopotential_height,
+};
+pub use geopotential_to_geometric_height::{GeopotentialError, geopotential_to_geometric_height};
+pub use heat_index::{HeatIndexError, heat_index};
+pub use height_to_geopotential::height_to_geopotential;
+pub use height_to_pressure::{HeightToPressureError, height_to_pressure};
+pub use pressure_to_height::{PressureToHeightError, pressure_to_height};
+pub use wind_chill::{WindChillError, wind_chill};
+pub use wind_components::{WindComponentError, wind_components};
+pub use wind_direction::{WindDirectionError, wind_direction};
+pub use wind_speed::{WindSpeedError, wind_speed};
