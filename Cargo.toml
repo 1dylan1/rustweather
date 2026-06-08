@@ -1,6 +1,6 @@
 [package]
 name = "rustweather"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "A Rust crate for weather, meteorology, and atmospheric parameter calculations."
 keywords = ["weather", "meteorology", "science", "metpy",  "atmosphere"]
