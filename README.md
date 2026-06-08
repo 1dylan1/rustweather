@@ -34,8 +34,6 @@ both degrees and kelvin.
 
 ## Installation
 
-After the crate is published to crates.io:
-
 ```toml
 [dependencies]
 rustweather = "0.1.0"
