@@ -26,6 +26,11 @@ Currently supported calculations include:
 - Geometric height to geopotential
 - Geometric height to atmospheric pressure
 - Dew point from vapor pressure
+- Dew point from temperature & relative humidity
+
+You'll notice that some functions require varying units for the parameters. To help alleviate some of the work,
+`helpers` has a section that will be continually adding varying conversion functions, such as temperature between
+both degrees and kelvin.
 
 ## Installation
 
@@ -88,6 +93,7 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `height_to_geopotential(height_m)` | meters | square meters per second squared, `m^2/s^2` |
 | `height_to_pressure(height_m)` | meters | hectopascals (millibars) |
 | `dew_point_from_vapor_pressure(vapor_pressure)` | hectopascals (millibars) | degrees celsius |
+| `dew_point_from_temp_and_rh(temp_c, rh)` | degrees Celsius, percentage | degrees celsius |
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 
 ## Error Handling
