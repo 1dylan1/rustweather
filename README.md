@@ -28,6 +28,9 @@ Currently supported calculations include:
 - Dew point from vapor pressure
 - Dew point from temperature & relative humidity
 - Wet bulb temperature
+- Saturated vapor pressure
+- Actual vapor pressure
+- Actual mixing ratio
 
 You'll notice that some functions require varying units for the parameters. To help alleviate some of the work,
 `helpers` has a section that will be continually adding varying conversion functions, such as temperature between
@@ -36,8 +39,7 @@ both degrees and kelvin.
 ## Installation
 
 ```toml
-[dependencies]
-rustweather = "0.1.0"
+cargo add rustweather
 ```
 
 For local development:
@@ -80,7 +82,10 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `height_to_pressure(height_m)` | meters | hectopascals (millibars) |
 | `dew_point_from_vapor_pressure(vapor_pressure)` | hectopascals (millibars) | degrees Celsius |
 | `dew_point_from_temp_and_rh(temp_c, rh)` | degrees Celsius, percentage | degrees Celsius |
-| `wet_bulb_temperature(temp_c, rh, pressure)` | degrees Celsius, percentage, hectopascalas (millibars) | degrees Celsius
+| `wet_bulb_temperature(temp_c, rh, pressure)` | degrees Celsius, percentage, hectopascalas (millibars) | degrees Celsius |
+| `saturated_vapor_pressure(temp_c)` | degrees Celsius | hectopascals (millibars) |
+| `actual_vapor_pressure(dew_pt)` | degrees Celsius | hectopascals (millibars) |
+| `acutal_mixing_ratio(pressure, temp_c)` | hectopascals (millibars), degrees Celsius | grams per kilogram (g/kg) |
 
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 

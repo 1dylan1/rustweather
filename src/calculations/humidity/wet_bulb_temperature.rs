@@ -109,7 +109,7 @@ where
         wet_bulb_guess_c += increment * previous_sign;
     }
 
-    Err(WetBulbError::DidNotConverge)
+    return Err(WetBulbError::DidNotConverge);
 }
 
 #[cfg(test)]

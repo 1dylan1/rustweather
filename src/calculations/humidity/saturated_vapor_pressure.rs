@@ -53,7 +53,7 @@ where
         return Err(SaturationVaporPressureError::TemperatureOutOfRange);
     }
 
-    Ok(6.112 * ((17.67 * temperature_c) / (temperature_c + 243.5)).exp())
+    return Ok(6.112 * ((17.67 * temperature_c) / (temperature_c + 243.5)).exp());
 }
 
 #[cfg(test)]

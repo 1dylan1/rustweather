@@ -1,0 +1,102 @@
+use num_traits::ToPrimitive;
+
+use crate::calculations::humidity::{ActualVaporPressureError, actual_vapor_pressure};
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum MixingRatioError {
+    InvalidPressure,
+    InvalidTemperature,
+    TemperatureOutOfRange,
+}
+
+/// Computes the actual mixing ratio from pressure and dewpoint temperature.
+///
+/// The actual mixing ratio is the mass of water vapor compared to the mass of
+/// dry air. It describes how much water vapor is actually present in the air.
+/// Adapted from NWS mixing ratio calculations.
+///
+/// # Type Parameters
+///
+/// * `T` - Numeric type for pressure that implements [`ToPrimitive`].
+/// * `U` - Numeric type for dewpoint temperature that implements [`ToPrimitive`].
+///
+/// # Arguments
+///
+/// * `pressure_hpa` - Air pressure in hectopascals.
+/// * `dewpoint_c` - Dewpoint temperature in degrees Celsius.
+///
+/// # Returns
+///
+/// Returns `Ok(mixing_ratio)` in grams per kilogram.
+pub fn actual_mixing_ratio<T, U>(pressure_hpa: T, dewpoint_c: U) -> Result<f64, MixingRatioError>
+where
+    T: ToPrimitive,
+    U: ToPrimitive,
+{
+    let pressure_hpa = pressure_hpa
+        .to_f64()
+        .ok_or(MixingRatioError::InvalidPressure)?;
+
+    let dewpoint_c = dewpoint_c
+        .to_f64()
+        .ok_or(MixingRatioError::InvalidTemperature)?;
+
+    if pressure_hpa <= 0.0 {
+        return Err(MixingRatioError::InvalidPressure);
+    }
+
+    let actual_vapor_pressure_hpa = actual_vapor_pressure(dewpoint_c).map_err(|err| match err {
+        ActualVaporPressureError::InvalidTemperature => MixingRatioError::InvalidTemperature,
+        ActualVaporPressureError::TemperatureOutOfRange => MixingRatioError::TemperatureOutOfRange,
+    })?;
+
+    if actual_vapor_pressure_hpa >= pressure_hpa {
+        return Err(MixingRatioError::InvalidPressure);
+    }
+
+    return Ok(621.97 * (actual_vapor_pressure_hpa / (pressure_hpa - actual_vapor_pressure_hpa)));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_actual_mixing_ratio() {
+        let cases = vec![
+            // pressure hpa, dewpoint c, expected mixing ratio
+            (1013.250, 15.000, 10.650),
+            (800.000, 25.000, 25.650),
+            (1050.250, 1.000, 3.914),
+        ];
+        for (pressure_hpa, dewpoint_c, expected) in cases {
+            let actual = actual_mixing_ratio(pressure_hpa, dewpoint_c)
+                .expect("actual mixing ratio should return Ok");
+            assert!(
+                (actual - expected).abs() < 0.001,
+                "actual_mixing_ratio({pressure_hpa}, {dewpoint_c}) = {actual}, expected {expected}."
+            );
+        }
+    }
+
+    #[test]
+    fn test_actual_mixing_ratio_rejects_zero_pressure() {
+        let actual = actual_mixing_ratio(0.0, 15.0);
+
+        assert_eq!(actual, Err(MixingRatioError::InvalidPressure));
+    }
+
+    #[test]
+    fn test_actual_mixing_ratio_rejects_negative_pressure() {
+        let actual = actual_mixing_ratio(-100.0, 15.0);
+
+        assert_eq!(actual, Err(MixingRatioError::InvalidPressure));
+    }
+
+    #[test]
+    fn test_actual_mixing_ratio_rejects_out_of_range_dewpoint_low() {
+        let actual = actual_mixing_ratio(1013.25, -36.0);
+
+        assert_eq!(actual, Err(MixingRatioError::TemperatureOutOfRange));
+    }
+}
