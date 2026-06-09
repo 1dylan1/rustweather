@@ -1,6 +1,9 @@
 use num_traits::ToPrimitive;
 
-use crate::calculations::humidity::{ActualVaporPressureError, actual_vapor_pressure};
+use crate::calculations::humidity::{
+    ActualVaporPressureError, SaturationVaporPressureError, actual_vapor_pressure,
+    saturation_vapor_pressure,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum MixingRatioError {
@@ -57,6 +60,64 @@ where
     return Ok(621.97 * (actual_vapor_pressure_hpa / (pressure_hpa - actual_vapor_pressure_hpa)));
 }
 
+/// Computes the saturated mixing ratio from pressure and air temperature.
+///
+/// The saturated mixing ratio is the maximum amount of water vapor air can hold
+/// at a given temperature and pressure before condensation begins.
+/// Adapted from the NWS saturated mixing ratio calculation.
+///
+/// # Type Parameters
+///
+/// * `T` - Numeric type for pressure that implements [`ToPrimitive`].
+/// * `U` - Numeric type for air temperature that implements [`ToPrimitive`].
+///
+/// # Arguments
+///
+/// * `pressure_hpa` - Air pressure in hectopascals.
+/// * `temperature_c` - Air temperature in degrees Celsius.
+///
+/// # Returns
+///
+/// Returns `Ok(saturated_mixing_ratio)` in grams per kilogram.
+pub fn saturated_mixing_ratio<T, U>(
+    pressure_hpa: T,
+    temperature_c: U,
+) -> Result<f64, MixingRatioError>
+where
+    T: ToPrimitive,
+    U: ToPrimitive,
+{
+    let pressure_hpa = pressure_hpa
+        .to_f64()
+        .ok_or(MixingRatioError::InvalidPressure)?;
+
+    let temperature_c = temperature_c
+        .to_f64()
+        .ok_or(MixingRatioError::InvalidTemperature)?;
+
+    if pressure_hpa <= 0.0 {
+        return Err(MixingRatioError::InvalidPressure);
+    }
+
+    let saturated_vapor_pressure_hpa =
+        saturation_vapor_pressure(temperature_c).map_err(|err| match err {
+            SaturationVaporPressureError::InvalidTemperature => {
+                MixingRatioError::InvalidTemperature
+            }
+            SaturationVaporPressureError::TemperatureOutOfRange => {
+                MixingRatioError::TemperatureOutOfRange
+            }
+        })?;
+
+    if saturated_vapor_pressure_hpa >= pressure_hpa {
+        return Err(MixingRatioError::InvalidPressure);
+    }
+
+    return Ok(
+        621.97 * (saturated_vapor_pressure_hpa / (pressure_hpa - saturated_vapor_pressure_hpa))
+    );
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -75,6 +136,24 @@ mod tests {
             assert!(
                 (actual - expected).abs() < 0.001,
                 "actual_mixing_ratio({pressure_hpa}, {dewpoint_c}) = {actual}, expected {expected}."
+            );
+        }
+    }
+
+    #[test]
+    fn test_saturated_mixing_ratio() {
+        let cases = vec![
+            // pressure hpa, temperature c, expected mixing ratio
+            (1013.250, 15.000, 10.639),
+            (800.000, 25.000, 25.640),
+            (1050.250, 1.000, 3.915),
+        ];
+        for (pressure_hpa, temperature_c, expected) in cases {
+            let actual = saturated_mixing_ratio(pressure_hpa, temperature_c)
+                .expect("saturated mixing ratio should return Ok");
+            assert!(
+                (actual - expected).abs() < 0.001,
+                "saturated_mixing_ratio({pressure_hpa}, {temperature_c}) = {actual}, expected {expected}."
             );
         }
     }

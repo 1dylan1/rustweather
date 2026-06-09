@@ -31,6 +31,8 @@ Currently supported calculations include:
 - Saturated vapor pressure
 - Actual vapor pressure
 - Actual mixing ratio
+- Saturated mixing ratio
+- Relative humidity
 
 You'll notice that some functions require varying units for the parameters. To help alleviate some of the work,
 `helpers` has a section that will be continually adding varying conversion functions, such as temperature between
@@ -85,7 +87,9 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `wet_bulb_temperature(temp_c, rh, pressure)` | degrees Celsius, percentage, hectopascalas (millibars) | degrees Celsius |
 | `saturated_vapor_pressure(temp_c)` | degrees Celsius | hectopascals (millibars) |
 | `actual_vapor_pressure(dew_pt)` | degrees Celsius | hectopascals (millibars) |
-| `acutal_mixing_ratio(pressure, temp_c)` | hectopascals (millibars), degrees Celsius | grams per kilogram (g/kg) |
+| `actual_mixing_ratio(pressure, temp_c)` | hectopascals (millibars), degrees Celsius | grams per kilogram (g/kg) |
+| `saturated_mixing_ratio(pressure, temp_c)` | hectopascals (millibars), degrees Celsius | grams per kilogram (g/kg) |
+| `relative_humidity_from_mixing_ratio(actual_mix_ratio, saturated_mix_ratio)` | grams per kilogram, grams per kilogram | percentage (0-100) |
 
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 
