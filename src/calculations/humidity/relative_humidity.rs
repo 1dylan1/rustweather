@@ -1,9 +1,80 @@
 use num_traits::ToPrimitive;
 
+use crate::calculations::humidity::{
+    ActualVaporPressureError, SaturationVaporPressureError, actual_vapor_pressure,
+    saturation_vapor_pressure,
+};
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum RelativeHumidityError {
     InvalidActualMixingRatio,
     InvalidSaturatedMixingRatio,
+    TemperatureOutOfRange,
+    InvalidTemperature,
+    DewPointGreatherThanTemp,
+}
+
+/// Computes relative humidity from actual and saturated mixing ratio.
+///
+/// Relative humidity is the ratio of the actual amount of water vapor in the air
+/// to the maximum amount of water vapor the air can hold at the same temperature
+/// and pressure.
+/// Uses the August-Roche-Magnus approach.
+///
+/// # Type Parameters
+///
+/// * `T` - Numeric type for actual mixing ratio that implements [`ToPrimitive`].
+/// * `U` - Numeric type for saturated mixing ratio that implements [`ToPrimitive`].
+///
+/// # Arguments
+///
+/// * `temp_c` - temperature in degrees Celsius.
+/// * `dewpoint_c` - dew point in degrees Celsius.
+///
+/// # Returns
+///
+/// Returns `Ok(relative_humidity)` as a percentage. (0-100)
+pub fn relative_humidity_from_temp_dewpoint<T, U>(
+    temp_c: T,
+    dewpoint_c: U,
+) -> Result<f64, RelativeHumidityError>
+where
+    T: ToPrimitive,
+    U: ToPrimitive,
+{
+    let temp_c = temp_c
+        .to_f64()
+        .ok_or(RelativeHumidityError::InvalidActualMixingRatio)?;
+
+    let dewpoint_c = dewpoint_c
+        .to_f64()
+        .ok_or(RelativeHumidityError::InvalidSaturatedMixingRatio)?;
+
+    if dewpoint_c == temp_c {
+        return Ok(100.0);
+    }
+
+    if dewpoint_c > temp_c {
+        return Err(RelativeHumidityError::DewPointGreatherThanTemp);
+    }
+
+    let saturated_vapor_pressure = saturation_vapor_pressure(temp_c).map_err(|err| match err {
+        SaturationVaporPressureError::TemperatureOutOfRange => {
+            RelativeHumidityError::TemperatureOutOfRange
+        }
+        SaturationVaporPressureError::InvalidTemperature => {
+            RelativeHumidityError::InvalidTemperature
+        }
+    })?;
+
+    let actual_vapor_pressure = actual_vapor_pressure(dewpoint_c).map_err(|err| match err {
+        ActualVaporPressureError::InvalidTemperature => RelativeHumidityError::InvalidTemperature,
+        ActualVaporPressureError::TemperatureOutOfRange => {
+            RelativeHumidityError::TemperatureOutOfRange
+        }
+    })?;
+
+    return Ok((actual_vapor_pressure / saturated_vapor_pressure) * 100.0);
 }
 
 /// Computes relative humidity from actual and saturated mixing ratio.
@@ -139,5 +210,24 @@ mod tests {
             actual,
             Err(RelativeHumidityError::InvalidSaturatedMixingRatio)
         );
+    }
+
+    #[test]
+    fn test_relative_humidity_from_temp_dewpoint() {
+        // temp_c, dewpoint_c, expected rh
+        let cases = vec![
+            (25.000, 20.000, 73.843),
+            (0.000, 0.000, 100.000),
+            (23.456, 17.720, 70.262),
+        ];
+        for (temp_c, dewpoint_c, expected) in cases {
+            let actual = relative_humidity_from_temp_dewpoint(temp_c, dewpoint_c)
+                .expect("relative_humidity_from_temp_dewpoint should return Ok");
+
+            assert!(
+                (actual - expected).abs() < 0.001,
+                "relative_humidity_from_temp_dewpoint({temp_c}, {dewpoint_c}) = {actual}, expected {expected}."
+            )
+        }
     }
 }
