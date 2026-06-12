@@ -8,6 +8,7 @@ mod pressure_to_height;
 mod wind_chill;
 mod wind_components;
 mod wind_direction;
+mod wind_shear;
 mod wind_speed;
 
 pub use apparent_temperature::{ApparentTemperatureError, apparent_temperature};
@@ -22,4 +23,7 @@ pub use pressure_to_height::{PressureToHeightError, pressure_to_height};
 pub use wind_chill::{WindChillError, wind_chill};
 pub use wind_components::{WindComponentError, wind_components};
 pub use wind_direction::{WindDirectionError, wind_direction};
+pub use wind_shear::{
+    WindShearError, bulk_shear, wind_shear_from_components, wind_shear_from_direction_speed,
+};
 pub use wind_speed::{WindSpeedError, wind_speed};

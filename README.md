@@ -34,6 +34,7 @@ Currently supported calculations include:
 - Saturated mixing ratio
 - Relative humidity from saturated/actual vapor pressure
 - Relative humidity from temperature/dew point
+- Wind Shear
 
 You'll notice that some functions require varying units for the parameters. To help alleviate some of the work,
 `helpers` has a section that will be continually adding varying conversion functions, such as temperature between
@@ -92,6 +93,9 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `saturated_mixing_ratio(pressure, temp_c)` | hectopascals (millibars), degrees Celsius | grams per kilogram (g/kg) |
 | `relative_humidity_from_mixing_ratio(actual_mix_ratio, saturated_mix_ratio)` | grams per kilogram, grams per kilogram | percentage (0-100) |
 | `relative_humidity_from_temp_dewpoint(temp_c, dewpoint_c)` | degrees Celsius, degrees Celsius | percentage (0-100) |
+| `wind_shear_from_components(lower_u, lower_v, upper_u, upper_v)` | wind component, wind component, wind component, wind component | wind shear magnitude (same units as input components) |
+| `wind_shear_from_direction_speed(lower_direction_deg, lower_speed, upper_direction_deg, upper_speed)` | meteorological degrees, wind speed, meteorological degrees, wind speed | wind shear magnitude (same units as input wind speeds) |
+| `bulk_shear(lower_u, lower_v, upper_u, upper_v)` | wind component, wind component, wind component, wind component | bulk wind shear magnitude (same units as input components) |
 
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 
