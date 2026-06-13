@@ -35,7 +35,8 @@ Currently supported calculations include:
 - Relative humidity from saturated/actual vapor pressure
 - Relative humidity from temperature/dew point
 - Wind Shear
-
+- Virtual temperature
+ 
 You'll notice that some functions require varying units for the parameters. To help alleviate some of the work,
 `helpers` has a section that will be continually adding varying conversion functions, such as temperature between
 both degrees and kelvin.
@@ -96,6 +97,7 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `wind_shear_from_components(lower_u, lower_v, upper_u, upper_v)` | wind component, wind component, wind component, wind component | wind shear magnitude (same units as input components) |
 | `wind_shear_from_direction_speed(lower_direction_deg, lower_speed, upper_direction_deg, upper_speed)` | meteorological degrees, wind speed, meteorological degrees, wind speed | wind shear magnitude (same units as input wind speeds) |
 | `bulk_shear(lower_u, lower_v, upper_u, upper_v)` | wind component, wind component, wind component, wind component | bulk wind shear magnitude (same units as input components) |
+| `virtual_temperature(temp_c, dewpoint_c, pressure) | degrees Celsius, degrees Celsius, millibars (hectopascals) | Kelvin |
 
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 
