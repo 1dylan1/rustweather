@@ -4,6 +4,7 @@ mod geopotential_to_geometric_height;
 mod heat_index;
 mod height_to_geopotential;
 mod height_to_pressure;
+mod potential_temperature;
 mod pressure_to_height;
 mod virtual_temperature;
 mod wind_chill;
@@ -21,6 +22,9 @@ pub use heat_index::{HeatIndexError, heat_index};
 pub use height_to_geopotential::height_to_geopotential;
 pub use height_to_pressure::{HeightToPressureError, height_to_pressure};
 pub use pressure_to_height::{PressureToHeightError, pressure_to_height};
+pub use potential_temperature::{
+    PotentialTemperatureError, potential_temperature, temperature_from_potential_temperature,
+};
 pub use virtual_temperature::{VirtualTemperatureError, virtual_temperature};
 pub use wind_chill::{WindChillError, wind_chill};
 pub use wind_components::{WindComponentError, wind_components};
