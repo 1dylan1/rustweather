@@ -38,6 +38,7 @@ Currently supported calculations include:
 - Virtual temperature
 - Potential temperature
 - Horizontal Visibility
+- Density Altitude
  
 You'll notice that some functions require varying units for the parameters. To help alleviate some of the work,
 `helpers` has a section that will be continually adding varying conversion functions, such as temperature between
@@ -103,6 +104,7 @@ This crate does not perform automatic unit conversion. Inputs must be provided u
 | `potential_temperature(pressure, temp_k)` | millibars (hectopascals), Kelvin | Kelvin |
 | `temperature_from_potential_temperature(pressure, potential_temp_k)` | millibars (hectopascals), Kelvin | Kelvin |
 | horizontal_visibility(pressure_pa, temperature_k, cloud_water, rain_water, snow, ice) | Pascals, Kelvin, kg/kg, kg/kg, kg/kg, kg/kg | kilometers |
+| density_altitude(pressure_ft, temperature_c) | Feet, degrees Celsius | feet |
 
 `wind_components` preserves the input speed unit. For example, if speed is provided in meters per second, the returned `u` and `v` components are also in meters per second.
 
