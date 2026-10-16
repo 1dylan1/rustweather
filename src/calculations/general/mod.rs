@@ -1,4 +1,5 @@
 mod apparent_temperature;
+mod crosswind_components;
 mod density_altitude;
 mod geometric_to_geopotential_height;
 mod geopotential_to_geometric_height;
@@ -16,6 +17,7 @@ mod wind_shear;
 mod wind_speed;
 
 pub use apparent_temperature::{ApparentTemperatureError, apparent_temperature};
+pub use crosswind_components::{CrosswindError, crosswind_components};
 pub use density_altitude::{DensityAltitudeError, density_altitude};
 pub use geometric_to_geopotential_height::{
     GeopotentialHeightError, geometric_to_geopotential_height,
